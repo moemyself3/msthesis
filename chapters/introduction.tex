@@ -1,7 +1,5 @@
 \chapter{Introduction}\label{ch:intro}
 
-\section{}
-
 \section{Variable stars}
 Variable stars can be classified into 2 major categories: intrinsic and extrinsic.
 Intrinsic variable stars change magnitude due to physical processes inside the star, for example the pulsating variable RR Lyraes.
@@ -15,9 +13,12 @@ Using different algorithms one can distinguish the difference between the types 
 
 This demonstrates RR Lyrae
 This demonstrates Eclipsing binaries
+
+The relation between orbital mechanics and light curves
+
 This demonstrates solar spots
 
-
+Complex systems can involve a combination of these different systems.
 
 \section{Eclipsing Binary Characterization}
 Binary stars can reveal physical properties by examining the light curves.
@@ -28,18 +29,23 @@ In this thesis a modified WD code will be used from the Physics of Eclipsing Bin
 \section{O-C calculations}
 Observed minus Calculated
 
-
 \section{Equations of motion}
 
-
-
 \section{WD code}
-
-
 \subsection{Modified WD code}
 
-
 \section{Pipeline for variable star detection}
+\begin{enumerate}
+    \item Data needs to be cleaned first.
+    \item Align frames
+    \item Extract sources
+    \item Cross match sources with catalogs
+    \item Create Database of known sources
+    \item Plot individual light curves
+    \item Analyze individual light curves for variability estimation
+    \item Sort database given variability ranking
+\end{enumerate}
+
 
 
 
@@ -50,7 +56,3 @@ A cadence can be determined by
 
 For example, the data gathered for this project was collected on multiple nights and observed on the order of hours with evenly timed frames.
 
-
-\begin{equation}
-dt=5
-\end{equation}
