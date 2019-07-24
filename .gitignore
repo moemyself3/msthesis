@@ -4,6 +4,9 @@
 ## Ignore generated pdf from main.tex
 main.pdf
 
+## Ignore figures (until mature document)
+/figures/*
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
