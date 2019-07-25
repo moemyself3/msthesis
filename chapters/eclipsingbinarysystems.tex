@@ -1,10 +1,64 @@
 \chapter{Eclipsing binary systems}
 
+\section{Defining eclipsing binary system}
+As the name implies, an eclipsing binary system is such that at least two objects orbit close to the
+same plane as viewed from an observer on Earth so that one object eclipses the other.
+
+\section{Eclipsing binary system types}
+Eclipsing binary systems are classified into three sub group types.
+The following are the eclipsing binary system types and definitions set by the GCVS$\colon$
+\subsection{Classification based on the shape of the light curve}
+\begin{description}
+    \item[E]   Eclipsing binary systems. These are binary systems with orbital planes so close to the observer's line of sight (the inclination i of the orbital plane to the plane orthogonal to the line of sight is close to 90 deg) that the components periodically eclipse each other. Consequently, the observer finds changes of the apparent combined brightness of the system with the period coincident with that of the components' orbital motion.
+
+    \item[EA]   Algol (Beta Persei)-type eclipsing systems. Binaries with spherical or slightly ellipsoidal components. It is possible to specify, for their light curves, the moments of the beginning and end of the eclipses. Between eclipses the light remains almost constant or varies insignificantly because of reflection effects, slight ellipsoidality of components, or physical variations. Secondary minima may be absent. An extremely wide range of periods is observed, from 0.2 to >= 10000 days. Light amplitudes are also quite different and may reach several magnitudes.
+
+    \item[EB]   Beta Lyrae-type eclipsing systems. These are eclipsing systems having ellipsoidal components and light curves for which it is impossible to specify the exact times of onset and end of eclipses because of a continuous change of a system's apparent combined brightness between eclipses; secondary minimum is observed in all cases, its depth usually being considerably smaller than that of the primary minimum; periods are mainly longer than 1 day. The components generally belong to early spectral types (B-A). Light amplitudes are usually <2 mag in V.
+
+    \item[EP]    Stars showing eclipses by their planets. Prototype: V0376 Peg.
+
+    \item[EW]   W Ursae Majoris-type eclipsing variables. These are eclipsers with periods shorter than 1 days, consisting of ellipsoidal components almost in contact and having light curves for which it is impossible to specify the exact times of onset and end of eclipses. The depths of the primary and secondary minima are almost equal or differ insignificantly. Light amplitudes are usually <0.8 mag in V. The components generally belong to spectral types F-G and later.
+\end{description}
+
+\subsection{Classification according to the components' physical characteristics}
+\begin{description}
+    \item[GS]   Systems with one or both giant and supergiant components; one of the components may be a main sequence star.
+
+    \item[PN]   Systems having, among their components, nuclei of planetary nebulae (UU Sge).
+
+    \item[RS]   RS Canum Venaticorum-type systems. A significant property of these systems is the presence in their spectra of strong Ca II H and K emission lines of variable intensity, indicating increased chromospheric activity of the solar type. These systems are also characterized by the presence of radio and X-ray emission. Some have light curves that exhibit quasi sine waves outside eclipses, with amplitudes and positions changing slowly with time. The presence of this wave (often called a distortion wave) is explained by differential rotation of the star, its surface being covered with groups of spots; the period of the rotation of a spot group is usually close to the period of orbital motion (period of eclipses) but still differs from it, which is the reason for the slow change (migration) of the phases of the distortion wave minimum and maximum in the mean light curve. The variability of the wave's amplitude (which may be up to 0.2 mag in V) is explained by the existence of a long-period stellar activity cycle similar to the 11-year solar activity cycle, during which the number and total area of spots on the star's surface vary.
+
+    \item[WD]   Systems with white-dwarf components.
+
+    \item[WR]   Systems having Wolf-Rayet stars among their components (V 444 Cyg).
+\end{description}
+
+\subsection{Classification based on the degree of filling of inner Roche lobes}
+\begin{description}
+    \item[AR]   Detached systems of the AR Lacertae type. Both components are subgiants not filling their inner equipotential surfaces.
+
+    \item[D]   Detached systems, with components not filling their inner Roche lobes.
+
+    \item[DM]   Detached main-sequence systems. Both components are main-sequence stars and do not fill their inner Roche lobes.
+
+    \item[DS]   Detached systems with a subgiant. The subgiant also does not fill its inner critical surface.
+
+    \item[DW]   Systems similar to W UMa systems in physical properties (KW, see below), but not in contact.
+
+    \item[K]   Contact systems, both components filling their inner critical surfaces.
+
+    \item[KE]   Contact systems of early (O-A) spectral type, both components being close in size to their inner critical surfaces.
+
+    \item[KW]   Contact systems of the W UMa type, with ellipsoidal components of F0-K spectral type. Primary components are main-sequence stars and secondaries lie below and to the left of the main sequence in the (MV,B-V) diagram.
+
+    \item[SD]   Semidetached systems in which the surface of the less massive component is close to its inner Roche lobe.
+\end{description}
+
+The combination of the above three classification systems for eclipsers results in the assignment of multiple classifications for object types. These are separated by a solidus (``/'') in the data field. Examples are: E/DM, EA/DS/RS, EB/WR, EW/KW, etc.
+
+
 \section{Eclipsing Binary Characterization}
 Binary stars can reveal physical properties by examining the light curves.
-Current models use a process called WD code.
-
-In this thesis a modified WD code will be used from the Physics of Eclipsing Binaries (PHOEBE)
 
 \section{O-C calculations}
 Observed minus Calculated
@@ -12,6 +66,14 @@ Observed minus Calculated
 \section{Equations of motion}
 
 \section{WD code}
+Current models use a process first developed by Wilson and Devinney~\cite{wilson_devinney_1971} for studying close eclipsing binary systems now 
+called WD code.
+
+In this study a modified WD code is used called PHOEBE (Physics of Eclipsing Binaries) code.
+The current release PHOEBE 2.1~\cite{horvat_2018} was built upon the previous releases 2.0~\cite{prsa_2016}
+and the original legacy code~\cite{prsa_2005}. 
+
+
 \subsection{Modified WD code}
 
 \section{Pipeline for variable star detection}
