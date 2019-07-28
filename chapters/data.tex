@@ -1,6 +1,45 @@
 \chapter{Data}
+\section{Motivation for pipline: lightcurator}
+Observing eclipsing binary systems especially of EW type require an observer to track the source on the order of hours.
+This means the data produced can include various stars as well as some potentially undiscovered variable stars.
+For this reason, I created a python package called lightcurator available on Github \url{https://github.com/moemyself3/lightcurator}
+and on PyPI \url{https://pypi.org/project/lightcurator/} for easy installation.
 
-\section{Target list}
+\section{Pipeline for variable star detection}
+\begin{enumerate}
+    \item Data needs to be cleaned first.
+    \item Align frames
+    \item Extract sources
+    \item Cross match sources with catalogs
+    \item Create Database of known sources
+    \item Plot individual light curves
+    \item Analyze individual light curves for variability estimation
+    \item Sort database given variability ranking
+\end{enumerate}
+
+\subsection{Data reduction}
+\subsection{Align frames}
+Frame alignment is done with a python package called astroalign written by Dr.\ Martin Beroiz~\cite{beroiz_2019} which is publicly
+available on Github\footnote{For the latest version of astroalign check: \url{https://github.com/toros-astro/astroalign}}
+
+\subsection{Extract sources}
+Source extraction is done with a python package called photutils written by 
+
+\subsection{Source cross matching}
+Source cross matching is done with a python package-called 
+
+\subsection{Analyzing variability}
+Variability analysis is done with a python package called feets written by J Cabral~\cite{cabral_2018}
+
+\section{Data Acquisition}
+Eclipsing binary optical data acquisition requires an observer to take time series ccd photometry of one target with an observation cadence dependent on the period.
+
+A cadence can be determined by 
+
+For example, the data gathered for this project was collected on multiple nights and observed on the order of hours with evenly timed frames.
+
+
+\section{Observed objects}
 \begin{table}
     \centering
     \begin{tabular}[h]{l c c c}
@@ -25,6 +64,5 @@
     \end{tabular}
     \caption{Observations of eclipsing binaries. Filters: RGB corresponds to Baader CCD RGB filters and C is unfiltered}\label{tab:observations}
 \end{table}
-
-\section{Data Reduction}
+\section{Known information of targets examined}
 

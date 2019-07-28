@@ -49,10 +49,31 @@
 %       http://cdsads.u-strasbg.fr/abs_doc/aas_macros.sty
 \usepackage{aas_macros}
 
+\usepackage{siunitx} % for proper units
+
+% this sets hanging indention for bibliography
+\usepackage[sort&compress]{natbib}      % for bibliography
+
+\setlength\bibindent{2em}
+
+\makeatletter
+\renewcommand\NAT@bibsetnum[1]{\settowidth\labelwidth{\@biblabel{#1}}%
+   \setlength{\leftmargin}{\bibindent}\addtolength{\leftmargin}{\dimexpr\labelwidth+\labelsep\relax}%
+   \setlength{\itemindent}{-\bibindent}%
+   \setlength{\listparindent}{\itemindent}
+\setlength{\itemsep}{\bibsep}\setlength{\parsep}{\z@}%
+   \ifNAT@openbib
+     \addtolength{\leftmargin}{\bibindent}%
+     \setlength{\itemindent}{-\bibindent}%
+     \setlength{\listparindent}{\itemindent}%
+     \setlength{\parsep}{0pt}%
+   \fi
+}
+\makeatother
+
 % this sets the name of the bibliography
 % add \vspace{1cm} here to adjust vertical spacing after bibliography title
 \renewcommand{\bibname}{BIBLIOGRAPHY}
-
 
 % Insert your name and major here in the format shown
 \Author{Moises Castillo}
@@ -69,18 +90,17 @@
 % If you have a long title, split it between multiple lines using the \\ command
 % Also, use comment characters to avoid unwanted spaces in the Abstract page
 \Title{Pipeline for variable star detection and\\
-eclipsing binary classification}
+eclipsing binary characterization}
 
 
 % Insert your research advisor and his title here
-\Advisor{Dr.\ Mario Diaz}
+\Advisor{Dr.\ Mario C.\ Diaz}
 \AdvisorTitle{Chair of Committee}
-
 
 % Insert the members of your committee here
 % You can also give MemberA a special title
-\MemberA{Dr.\ Member A}  %\MemberATitle{Co-Chair of Committee}
-\MemberB{Dr.\ Member B}
+\MemberA{Dr.\ Nicolas Pereyra}  %\MemberATitle{Co-Chair of Committee}
+\MemberB{MemberB}
 \MemberC{}
 \MemberD{}
 \MemberE{}
@@ -91,8 +111,9 @@ eclipsing binary classification}
 % generated.  Specify the "final" option in the \documentclass to update the
 % counts to the correct values.
 \Abstract{%
-    An abstract is a brief summary often used to help the reader quickly
-    ascertain the paper's purpose. To be written at the end. $12345$
+The purpose of this project is to create a pipeline written in python that creates a framework for detecting variable stars by
+creating a catalogue of stars and light curves of data from eclipsing binary star observations.
+The eclipsing binary stars were the main targets in the observations and will be characterized.
 }
 
 
@@ -149,7 +170,8 @@ eclipsing binary classification}
 % This makes the bibliography.
 % Enter your references in the BibTex file "references.bib"
 % You can find bibtex info from Google Scholar.
-\bibliographystyle{siam}
+%\bibliographystyle{siam}
+\bibliographystyle{plain}
 \bibliography{msthesisref}
 
 

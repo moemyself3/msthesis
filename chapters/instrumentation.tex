@@ -1,24 +1,151 @@
 \chapter{Instrumentation}
 \section{Dome}
-Dr.Cristina Valeria Torres Memorial Observatory inaugurated May 5, 2018.
+Dr.\ Cristina Valeria Torres Memorial Astronomical Observatory (CTMO) inaugurated May 5, 2018. 
 Formerly Nompuewenu Observatory.
-Custom build.
-\subsection{Specifications}
-\subsection{Robotizing of dome}
-\subsection{Hardware}
-\begin{enumerate}
-    \item Arduino *Need to Specify* 
-    \item Yaskawa J1000 Drive
-\end{enumerate}
+The word Nompuewenu meaning ``beyond the sky'' is borrowed from the Mapuche language used by the Mapuche people indigenous to Argentina.
 
+\begin{figure}[h]
+    \centering
+    \includegraphics{example-image}
+\caption{Dr.\ Cristina Valeria Torres Memorial Astronomical Observatory at Resaca de la Palma State Park}
+\label{fig:CTMO}
+\end{figure}
+
+The observatory was first constructed on the Brownsville campus of UTRGV\@.
+With a growing downtown and campus light pollution became a serious issue for the observatory.
+Alumn Antonio Galan scouted the region for a suitable location to relocate.
+Former State Park Superintendent Pablo Deyturbe found Galan scouting the area near Resaca de la Palma State Park (RDLP).
+Director of the Center for Gravitational Wave Astronomy (CGWA) Mario Diaz and Deyturbe worked together to establish  
+a Memorandum of Understanding between UTRGV and Texas Parks and Wildlife Department (TPWD) to allow the relocation
+of the observatory to be Resaca de la Palma State Park.
+
+The dome is a custom build with all parts manufactured uniquely for this research and educational facility.
+
+\subsection{Specifications}
+\begin{description}
+    \item[Observatory style] Dome shape
+    \item[Window] Two parts, upper slides along domed roof; bottom opens draw bridge style
+    \item[Wall height] 88 inches
+    \item[Average Diameter] 245 inches\footnote{Average diameter is used since all domes increase in eccentricity or become egg shaped over time}
+    \item[Approximate Height] 25 feet
+\end{description}
+
+\subsection{Robotizing of dome for remote operation}
+The author is leading efforts to robotize the observatory and instrumentation for remote and autonomous operation.
+The motors that control the shutter door and rotation are controlled manually.
+For optimal control of the observatory, robotizing these controls is required.
+These are the planned upgrades for the observatory.
+\begin{itemize}
+    \item Add hydraulic lift system to control shutter draw bridge door
+    \item Implement wireless communication for shutter window and door control
+    \item Add gear encoding to dome rotation motor using a rotary sensor
+    \item Add cardinal position encoding using permanent magnets and hall effect sensors
+    \item Use scripts to create nightly observation queues based on requests and LIGO\footnote{Laser Interferometer Gravitational Wave Observatory} alerts for Optical Followups of Gravitational Wave Events
+    \item Develop drivers for communicating with sensors and observatory software
+\end{itemize}
+
+\subsection{Hardware}
+\begin{itemize}
+    \item Dome Rotation
+        \begin{itemize}
+            \item Arduino Uno  
+            \item Yaskawa J1000 Drive
+            \item Custom Relay Circuit
+        \end{itemize}
+    \item Shutter Control Window
+        \begin{itemize}
+            \item 12 VDC Gel Marine Battery
+            \item Custom Controller
+        \end{itemize}
+    \item Shutter Drawbridge
+        \begin{itemize}
+            \item Rope
+            \item Pulley
+        \end{itemize}
+\end{itemize}
+    
 \section{Telescope System}
 \subsection{16-inch Meade LX200-GPS}
-\subsubsection{Specifications}
+\subsubsection{OTA Specifications}
+The following specifications are given by the manufacturer Meade Instruments Corporation~\cite{meade_2003} for the optical tube assembly (OTA).
+\begin{description}
+    \item[Optical design] Schmidt-Cassegrain
+    \item[Clear aperture] \SI{406.4}{\milli\meter}
+    \item[Focal length] \SI{4064}{\milli\meter}
+    \item[Focal ratio] f/10
+    \item[Resolving power] \SI{0.28}{\arcsecond}
+    \item[Coatings] Meade EMC Super Multi-Coatings
+    \item[Mounting] Heavy-duty double-tine forks
+    \item[Gears] 11-inch diameter worm gears, both axes
+    \item[Periodic error correction] Both axes
+    \item[Alignment] Alt-Azimuth or equatorial with optional pier
+    \item[Pointing Precision] \SI{2}{\arcminute} in GO TO mode
+    \item[Slew Speeds] 1x sidereal to \SI{8}{\deg\per\second} in 9 increments
+    \item[Power] 18V power supply
+    \item[Accesories] These are devices used during regular observations or setup
+        \begin{itemize}
+            \item 8x \SI{50}{\milli\meter} viewfinder
+            \item 4-speed zero image-shift microfocuser
+            \item 16-channel GPS receiver
+            \item True-level electronic sensor
+        \end{itemize}
+    \item[Net telescope weight] 110 lbs
+\end{description}
+
+\subsubsection{Telescope Pier}
+Telescope pier was constructed by a custom pedestal and the optional equatorial wedge made by Meade.
+\begin{description}
+    \item[Pedastal height] 44.25 inches
+    \item[Wedge height] xx inches
+    \item[Wedge inclination] \SI{26}{\deg}
+\end{description}
+
 \subsubsection{Installation}
+Installation required multiple steps.
+First, using a chain winch we set the pedestal onto bolts that were installed in the base of the concrete pad designed for the load of the telescope. 
+Second, using the winch we installed the pier on top of the pedestal keeping alignment of the wedge due north for polar alignment of the telescope.
+Third, using the winch we lifted the telescope to the wedge and bolted the instrument.
+
+A special bolting technique was used to allow for precise polar alignment.
+
 \subsubsection{Limitations}
+Exposures longer than 30 seconds were not possible due to noticeable drift.
+Attempts were made to correct for this issue by doing a drift polar alignment.
+
+The microfocuser was not able to hold the weight of the cameras used for research.
+The author designed and constructed a rig that fit on the back of the OTA that supported the extra weight and allowed
+for regular function of the microfocuser.
+
+According to the aperture of the telescope, an ideal limiting magnitude is calculated, assuming perfect optics, camera, and sky brightness,
+i.e.\  spacelike conditions.
+The estimation for limiting flux of a space based telescope as explained by Chromey~\cite{chromey_2010} is given by,
+\begin{equation}
+    f_{\text{d,space}} = {\left(\frac{h c\lambda}{Q}\right)}^\frac{1}{2} {\left( \frac{b_{\lambda}}{t}\right)}^\frac{1}{2}\frac{2.44}{D^2}
+    \label{eq:limflux}
+\end{equation}
+where the first term refers to the quantum efficiency of the camera, the second term refers to
+the sky brightness over the exposure time, and the last term assumes telescope is
+diffraction limited\footnote{Diffraction limited refers to an optical system at its theoretical limit.}.
+
+To convert from flux, $f$, to magnitude, $m$, we use the following equation,
+\begin{equation}
+    m = -2.5 \log{f}
+    \label{eq:mag2flux}
+\end{equation}
+and find the limiting magnitude to be 17.
 
 \subsection{CDK17 on L-500 direct drive mount}
 \subsubsection{Specifications}
+The following specifications are given by the manufacturer PlaneWave Instruments~\cite{cdk17} for the optical tube assembly (OTA).
+\begin{description}
+    \item[Optical design] Corrected Dall-Kirkham
+    \item[Aperature] \SI{432}{\milli\meter}
+    \item[Focal length] \SI{2939}{\milli\meter}
+    \item[Focal ratio] F/6.8
+    \item[Weight] 106 lbs
+    \item[OTA length] \SI{1067}{\milli\meter}
+    \item[Feature] Three cooling fans ejecting air from the back of the telescope and four fans blowing across the boundary layer of the mirror surface. This helps the telescope to reach thermal equilibrium quickly. The fans are controlled by a computer if the optional Electronic Focus Accessory (EFA Kit) is purchased.
+\end{description}<++>
 \subsubsection{Installation}
 \subsubsection{Limitations}
 
