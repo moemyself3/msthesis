@@ -221,7 +221,7 @@ The following specifications are given by the manufacturer Diffraction Limited~\
     \item[Pixel Array] $3326 \times 2504$ pixels
     \item[CCD Size] $17.96 \times \SI{13.52}{\milli\meter}$
     \item[Gain] $\SI{0.37}{\elementarycharge-\per\text{ADU}}$
-    \item[Read noise] $\SI{9.3}{\elementarycharge\neg}$
+    \item[Read noise] $\SI{9.3}{\elementarycharge}$
     \item[Digitization Rates] 10 Megapixels / Second
     \item[Full Frame Download] Less than 1 second
     \item[Weight] 1.8 pounds
@@ -242,7 +242,7 @@ The following specifications are given by the manufacturer ANDOR~\cite{apogee}.
     \item[Pixel Size] $9 \times \SI{9}{\micro\meter}$
     \item[Pixel Array] $4096 \times 4096$ pixels
     \item[CCD Size] $36.8 \times \SI{36.8}{\milli\meter}$
-    \item[Read noise] $\SI{7.4}{\elementarycharge\neg}$
+    \item[Read noise] $\SI{7.4}{\elementarycharge}$
     \item[Weight] 4.2 pounds
 \end{description}
 
@@ -270,6 +270,8 @@ Using equations~\ref{eq:pixelscale} and~\ref{eq:fov} to find pixel scale and FOV
 
 \section{Software}
 CTMO has a Github page where software is being developed at \url{https://github.com/CTMObservatory}
+Software used was Maxim DL~\cite{maxim}, Cartes du Ciel-The Sky~\cite{cdc}, ASCOM Platform (POTH)~\cite{ascom},
+PWI3/PWI4\cite{planewave}, and INDI Library~\cite{indi}.
 
 \subsection{Dome}
 The author is leading the design and development of the custom software for the arduino.
@@ -281,8 +283,8 @@ Arduino code is being written by Martin Beroiz.
 \begin{description}
     \item[Maxim DL] Used for 16-in Meade with ASCOM to attached WCS and pointing information to data
     \item[Cartes du Ciel] Used for 16-in Meade with LX200 Driver and ASCOM Platform separately 
-    \item[PWI3] Used for pointing CDK17
-    \item[PWI4] Used for focusing CDK17
+    \item[PWI3] Used for focusing and controlling fans on CDK17
+    \item[PWI4] Used for pointing CDK17
 \end{description}
 
 \subsection{Camera}
@@ -301,6 +303,12 @@ POTH stands for Plain Old Telescope Handset. It uses a framework called ASCOM\@.
 ASCOM uses Windows COM protocols to communicate with the drivers required to operate equipment with the computer.
 POTH acts as a hub for all communications between drivers, devices, and programs to allow instruments to be used simultaneously 
 on different programs.
+\begin{figure}[h]
+    \centering
+    \includegraphics{example-image}%{figures/poth.png}
+    \caption{POTH block diagram of typical usage from ASCOM website~\protect\cite{ascom}}
+\label{fig:poth}
+\end{figure}
 
 \subsubsection{INDI}
 INDI stands for Instrument Neutral Distributed Interface.
