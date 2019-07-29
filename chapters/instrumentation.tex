@@ -1,4 +1,7 @@
 \chapter{Instrumentation}
+The author is leading the Group for the Advancement in Automation and Instrumentation (GAIA).
+GAIA is the group responsible for maintaining, servicing, and upgrading hardware and software related to the observatory.
+
 \section{Dome}
 Dr.\ Cristina Valeria Torres Memorial Astronomical Observatory (CTMO) inaugurated May 5, 2018. 
 Formerly Nompuewenu Observatory.
@@ -45,6 +48,8 @@ These are the planned upgrades for the observatory.
 \end{itemize}
 
 \subsection{Hardware}
+The author has created prototypes of sensors to use for gear encoding with optical and hall effect sensors.
+
 \begin{itemize}
     \item Dome Rotation
         \begin{itemize}
@@ -96,8 +101,9 @@ The following specifications are given by the manufacturer Meade Instruments Cor
 Telescope pier was constructed by a custom pedestal and the optional equatorial wedge made by Meade.
 \begin{description}
     \item[Pedastal height] 44.25 inches
-    \item[Wedge height] xx inches
+    \item[Wedge height] 32 inches
     \item[Wedge inclination] \SI{26}{\deg}
+    \item[Weight] 225 lbs
 \end{description}
 
 \subsubsection{Installation}
@@ -130,9 +136,9 @@ diffraction limited\footnote{Diffraction limited refers to an optical system at 
 To convert from flux, $f$, to magnitude, $m$, we use the following equation,
 \begin{equation}
     m = -2.5 \log{f}
-    \label{eq:mag2flux}
+    \label{eq:flux2mag}
 \end{equation}
-and find the limiting magnitude to be 17.
+and find the limiting magnitude to be 12.
 
 \subsection{CDK17 on L-500 direct drive mount}
 \subsubsection{Specifications}
@@ -142,27 +148,171 @@ The following specifications are given by the manufacturer PlaneWave Instruments
     \item[Aperature] \SI{432}{\milli\meter}
     \item[Focal length] \SI{2939}{\milli\meter}
     \item[Focal ratio] F/6.8
-    \item[Weight] 106 lbs
+    \item[OTA Weight] 106 lbs
     \item[OTA length] \SI{1067}{\milli\meter}
     \item[Feature] Three cooling fans ejecting air from the back of the telescope and four fans blowing across the boundary layer of the mirror surface. This helps the telescope to reach thermal equilibrium quickly. The fans are controlled by a computer if the optional Electronic Focus Accessory (EFA Kit) is purchased.
-\end{description}<++>
+    \item[Mounting] L-500 direct drive mount
+    \item[Mount weight] 257 lbs
+    \item[Load Capacity] 200 lbs
+    \item[Slew Rate] 20 degrees per second (standard); 50 degrees per second (maximum), both axes
+    \item[Motor Control] Industrial grade brushless motor control system and built in electronics
+    \item[Pointing Accuracy] $<10$ arcsecond RMS with PointXP Model
+    \item[Pointing Precision] 2 arcsecond
+    \item[Tracking Accuracy] $< 0.3$ arcsecond error over 5 minute period
+    \item[System Natural Frequency] 10 Hz or greater
+    \end{description}
+
+\subsubsection{Telescope Pier}
+The manufacturer Planewave Instruments provided a tool for calculating the required pier height for their wedge and L-500 Direct Drive Mount.
+We used the same pedestal that was used with the Meade pier.
+\begin{description}
+    \item[Pedastal height] 44.25 inches
+    \item[Wedge inclination] for latitudes 22--28 degrees
+    \item[Wedge weight] 145 lbs
+    \item[Pier height] 12 inches
+\end{description}
+
 \subsubsection{Installation}
+The installation of the CDK17 with L-500 mount required the removal of the 16-inch Meade LX200 GPS Telescope system and wedge from the pedestal.
+After removal of the Meade system, we installed the 12-inch pier on the pedestal.
+Over the pier we installed the wedge and did a rough alignment to due north for polar alignment.
+Precision was not critical at this point since the Planewave wedge for L500 mount features fine latitude and azimuth adjustments.
+We used a combination of a winch and motor hoist crane to support the weight of the L-500 mount to bolt the mount to the wedge.
+Finally, we adjusted the saddle of the telescope and fit onto the mount.
+
+Prior to use, balancing was done with the camera and focuser installed.
+The manufacturer had to remotely recalibrate the motors due to the weight of instrumentation.
+
+Pointing model is required for proper pointing. This was created following a process in PWI3, software developed by Planewave.
+First, 30 evenly spaced point above 30 degrees in altitude were selected. 
+The software commands the telescope to one of 30 points, takes a picture,
+finds the positions of all objects in the frame through a process called plate solving to establish precise pointing position, and
+updates the table of the pointing to the plate solved position.
+
 \subsubsection{Limitations}
+Using equations~\ref{eq:limflux} and~\ref{eq:flux2mag}, we find the diffraction limited telescope limiting magnitude to be 12.2.
+We have found no issues with drifting with exposures longer than 2 minutes and tracking holding steady for over 4 hours.
 
 \section{Camera}
+\subsection{Pixel Scale}
+Pixel scale is a conversion between the angular distance of sky that is visible per pixel.
+Chromey~\cite{chromey_2010} describes pixel scale as,
+\begin{equation}
+    \text{pixel scale} = \frac{206,265}{f} d
+    \label{eq:pixelscale}
+\end{equation}
+where $f$ is the focal is the focal length and $d$ is the separation between the centers of pixels.
+For our calculations, we will assume $d$ is equal to the pixel width.
+
+\subsection{Field of View}
+Field of view (FOV) refers to the angular distance of sky that is visible through the telescope given the physical parameters of the CCD\@.
+FOV can be calculated by the following equation as described by Chromey~\cite{chromey_2010},
+\begin{equation}
+    \text{FOV} = (\text{pixel scale})(\text{length}) \times (\text{pixel scale})(\text{width})
+    \label{eq:fov}
+\end{equation}
+
 \subsection{SBIG STF-8300}
+The following specifications are given by the manufacturer Diffraction Limited~\cite{sbig}.
+\subsubsection{Specifications}
+\begin{description}
+    \item[CCD] Kodak KAF-8300
+    \item[Pixel Size] $5.4 \times \SI{5.4}{\micro\meter}$
+    \item[Pixel Array] $3326 \times 2504$ pixels
+    \item[CCD Size] $17.96 \times \SI{13.52}{\milli\meter}$
+    \item[Gain] $\SI{0.37}{\elementarycharge-\per\text{ADU}}$
+    \item[Read noise] $\SI{9.3}{\elementarycharge\neg}$
+    \item[Digitization Rates] 10 Megapixels / Second
+    \item[Full Frame Download] Less than 1 second
+    \item[Weight] 1.8 pounds
+\end{description}
+
 \subsubsection{16-inch Meade}
+Using equations~\ref{eq:pixelscale} and~\ref{eq:fov} to find pixel scale and FOV, respectively, we find, 
+\begin{description}
+    \item[Pixel scale] \SI{0.274}{\arcsecond\per\text{pixel}}
+    \item[FOV] $\SI{15.19}{\arcminute} \times \SI{11.44}{\arcminute}$
+\end{description}
 
 \subsection{Apogee Alta F16M}
+The following specifications are given by the manufacturer ANDOR~\cite{apogee}.
+\subsubsection{Specifications}
+\begin{description}
+    \item[CCD] Kodak KAF-16801
+    \item[Pixel Size] $9 \times \SI{9}{\micro\meter}$
+    \item[Pixel Array] $4096 \times 4096$ pixels
+    \item[CCD Size] $36.8 \times \SI{36.8}{\milli\meter}$
+    \item[Read noise] $\SI{7.4}{\elementarycharge\neg}$
+    \item[Weight] 4.2 pounds
+\end{description}
+
+
 \subsubsection{16-inch Meade}
+Using equations~\ref{eq:pixelscale} and~\ref{eq:fov} to find pixel scale and FOV, respectively, we find, 
+\begin{description}
+    \item[Pixel scale] \SI{0.457}{\arcsecond\per\text{pixel}}
+    \item[FOV] $\SI{31.18}{\arcminute} \times \SI{31.18}{\arcminute}$
+\end{description}
+
 \subsubsection{CDK17}
+Using equations~\ref{eq:pixelscale} and~\ref{eq:fov} to find pixel scale and FOV, respectively, we find, 
+\begin{description}
+    \item[Pixel scale] \SI{0.63}{\arcsecond\per\text{pixel}}
+    \item[FOV] $\SI{43.12}{\arcminute} \times \SI{43.12}{\arcminute}$
+\end{description}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics{example-image}
+    \caption{Linearity test by Richard Camuccio}
+\label{fig:linearity}
+\end{figure}
 
 \section{Software}
+CTMO has a Github page where software is being developed at \url{https://github.com/CTMObservatory}
+
 \subsection{Dome}
+The author is leading the design and development of the custom software for the arduino.
+A custom ASCOM driver was written by Latifah Maasarani~\cite{maasarani_2017} to interface 
+with an arduino. 
+Arduino code is being written by Martin Beroiz.
+
 \subsection{Telescope}
+\begin{description}
+    \item[Maxim DL] Used for 16-in Meade with ASCOM to attached WCS and pointing information to data
+    \item[Cartes du Ciel] Used for 16-in Meade with LX200 Driver and ASCOM Platform separately 
+    \item[PWI3] Used for pointing CDK17
+    \item[PWI4] Used for focusing CDK17
+\end{description}
+
 \subsection{Camera}
-\subsection{Observatory Control}
+\begin{description}
+    \item[Maxim DL] Used for controlling Camera coolers, Filter wheels, and plate solving.
+\end{description}
+
+\subsection{Observatory Control System}
 This section explains the different observatory control systems implemented during use.
-Observatory controls unify the different hardware and software. 
+Observatory controls unify the different hardware, drivers, and software. 
+Use of systems like this allow for ease of use and proper storage of of data including World Coordinate System (WCS) attachment to 
+the file headers of images.
+
 \subsubsection{POTH}
+POTH stands for Plain Old Telescope Handset. It uses a framework called ASCOM\@.
+ASCOM uses Windows COM protocols to communicate with the drivers required to operate equipment with the computer.
+POTH acts as a hub for all communications between drivers, devices, and programs to allow instruments to be used simultaneously 
+on different programs.
+
 \subsubsection{INDI}
+INDI stands for Instrument Neutral Distributed Interface.
+According to the INDI website\footnote{\url{http://www.indilib.org}}, INDI Library is an open source architecture for control and automation of astronomical devices.
+
+\subsection{POTH vs INDI}
+Both frameworks offer the same service, but were specific to operating system until more recently.
+INDI is working on a windows port, but it is in very early stages. 
+There is a group called Cloudmakers\footnote{\url{http://www.cloudmakers.eu/windi/}} that made an INDI wrapper and server for Windows.
+The INDI wrapper bridges INDI commands with ASCOM protocols.
+
+ASCOM now has an option for Unix based systems that works off of RESTful API and TCP/IP
+commands to communicate with drivers and clients called ASCOM Alpaca.
+According to the Alpaca developer's webpage\footnote{\url{https://ascom-standards.org/Developer/Alpaca.htm}},
+Alpaca is 100 percent independent of Windows. Nowhere in the Alpaca ecosystem is Windows (or COM) needed.
