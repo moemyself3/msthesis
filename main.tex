@@ -38,7 +38,7 @@
 % This assumes you have Times New Roman font installed in your machine
 % WARNING! This will NOT change the font in Math Environments
 \usepackage{ifxetex}
-\ifxetex
+\ifxetex{}
    \usepackage{fontspec}
    \setmainfont{Times New Roman}
 \fi
@@ -52,6 +52,7 @@
 \usepackage{siunitx} % for proper units
 
 % this sets hanging indention for bibliography
+% reference https://tex.stackexchange.com/questions/154622/natbib-will-not-auto-indent-and-bibhang-is-not-recognized
 \usepackage[sort&compress]{natbib}      % for bibliography
 
 \setlength\bibindent{2em}
@@ -70,6 +71,15 @@
    \fi
 }
 \makeatother
+
+%\newtotcounter{citesnum} % counter for counting citations
+\def\oldcite{} \let\oldcite=\cite
+\def\cite{\stepcounter{citesnum}\oldcite}
+
+%\newtotcounter{bibnum} % counter for counting titles in bibliography
+\def\oldbibitem{} \let\oldbibitem=\bibitem
+\def\bibitem{\stepcounter{bibnum}\oldbibitem}
+
 
 % this sets the name of the bibliography
 % add \vspace{1cm} here to adjust vertical spacing after bibliography title
