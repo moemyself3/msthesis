@@ -15,7 +15,6 @@
 % These packages typeset the thesis with Times Roman font
 \RequirePackage{mathptmx}
 \RequirePackage[T1]{fontenc}
-\RequirePackage{fontspec}
 
 
 \RequirePackage{amsmath}  % for ams mathematical environments
