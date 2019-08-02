@@ -53,7 +53,7 @@
 
 % this sets hanging indention for bibliography
 % reference https://tex.stackexchange.com/questions/154622/natbib-will-not-auto-indent-and-bibhang-is-not-recognized
-\usepackage[sort&compress]{natbib}      % for bibliography
+\usepackage[sort&compress,numbers]{natbib}      % for bibliography
 
 \setlength\bibindent{2em}
 
@@ -135,7 +135,10 @@ The eclipsing binary stars were the main targets in the observations and will be
 
 % Acknowledge those who helped and supported you here. This is optional.
 \Acknowledgments{%
-    Acknowledgements should be simple, in good taste, and fit on one page. CTMO, CGWA
+    I would like to acknowledge CTMO CGWA
+    This research has made use of the VizieR catalogue access tool, CDS,
+Strasbourg, France.  The original description of the VizieR service was
+published in A\&AS 143, 23
 }
 
 
@@ -181,7 +184,8 @@ The eclipsing binary stars were the main targets in the observations and will be
 % Enter your references in the BibTex file "references.bib"
 % You can find bibtex info from Google Scholar.
 %\bibliographystyle{siam}
-\bibliographystyle{plain}
+\bibliographystyle{plainnat} % this style shows doi
+%\bibliographystyle{plain}
 \bibliography{msthesisref}
 
 
