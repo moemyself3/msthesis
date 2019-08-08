@@ -1,49 +1,188 @@
-\chapter{Data}
+\chapter{Methods}
 \label{chp:data}
 
-\section{Motivation for pipline: lightcurator}
+\section{Data Acquisition}
+Eclipsing binary optical data acquisition requires an observer to do time series ccd photometry
+of one target with an observation cadence dependent on the period of the system.
+For example, the data gathered for this project was collected on multiple nights and observed on the order of hours with evenly timed frames.
+
+\subsection{Planning Observations}
+There are some options for selecting sources to observe.
+The following process is one learned in practice with amateur astronomer Carlos Colazo of Argentina.
+This study uses the Variable Star and Exoplanet Section of Czech Astronomical Society's observation project called
+BRNO Regional Network of Observers (BRNO)~\cite{brno}.
+
+An ephemeris is made by using a table of predicted times of minima published on the BRNO webpage.
+For site specific predictions, the webpage needs to be visited in the original Czech language.
+A web form shown in figure~\ref{fig:brno} appears to include latitude and ELongitude (longitude in degrees east of the meridian) of the observation site.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\columnwidth]{example-image}%{figures/brno.png}
+    \caption{Web form for eclipsing binary predicted times of minima from the Variable Star and Exoplanet Section of Czech Astronomical Society's observation project called BRNO Regional Network of Observers (BRNO)}
+\label{fig:brno}
+\end{figure}
+
+It is important to mention the American Association of Variable Star Observers (AAVSO)
+offers a target tool on the web~\footnote{\url{https://filtergraph.com/aavso}} to help make an observation plan.
+
+
+\subsubsection{Selection criteria}
+Typically, EW type binary stars have the shortest period and were chosen for this reason. 
+Observation time is set to start no later than one hour before the predicted time of minima.
+The error on the predicted time of minima can be great due to lack of observational data.
+
+BRNO classifies stars using a scale from 1 to 10.
+As a rule of thumb, the scale refers to the number of years since last reported observation.
+BRNO explicitly recommends observers observe objects with a rating of 5 or more.
+
+Since observation are made over several hours it is best practice to pick objects on the eastern parts of the sky.
+This allows for maximum viewing time. The altitude of the target should be above 30 degrees for proper photometry study, but 
+can be slightly lower.
+
+Lastly, as with all observations, the limiting magnitude of the system will dictate what objects are observable.
+The change in magnitude of known eclipsing binaries stated in catalogs.
+The observer must make certain that the instrumentation allows for such observation.
+Millimagnitude precision is standard in exoplanet research, but is not required for any of the observations in this study.
+
+\subsection{Observation}
+When performing an eclipsing binary observation the observer should attempt to observe 
+the same binary system through the entire night to capture the most complete period. 
+Some systems need to be observed across several nights to obtain a full period.
+When conducting any measurement it is good practice to make plots on-the-fly to make sure the quality of data is consistent.
+
+Since the observer typically will begin observation on the eastern sky with a low altitude, the air mass will be highest
+at the beginning of the observation.
+This can present a problem if the observer does not consider the increase of flux as the object approaches zenith or the highest
+point in the sky.
+When the object being observed reaches zenith, the air mass is the lowest and if not considered can cause over saturation of the CCD\@.
+Saturation is when the potential well for the pixel is completely filled and will no longer capture the electrons
+converted from the photon interaction with the CCD\@.
+
+\subsection{Post observation}
+After the observation is complete it is vital to collect calibration frames required for proper data reduction for photometry.
+Data reduction is the process for removing noise due to dark current, bias, and any obscuring defects in the optical path of the system.
+Required calibration frames are,
+\begin{description}
+    \item[Flat Frames] Flat frames are made by using an evenly illuminated light source. This can be created by using a white screen
+        and a diffuse white light. This process will show any obscuring defects that are in the optical path like dust and vignetting.
+        The required exposure time depends on the lighting system to reach a signal between 30 to 50 percent of saturation.
+    \item[Dark Frames] Dark frames are made by taking closed `exposures' of the CCD\@. Exposure time for the dark frames need to match
+        the flat frame exposure times and object exposure times.
+    \item[Bias Frames] Bias frames are only needed if the observer does not match the dark frame exposure times to the flat frames.
+\end{description}
+
+\section{Motivation for pipeline: lightcurator}
 Observing eclipsing binary systems especially of EW type require an observer to track the source on the order of hours.
 This means the data produced can include various stars as well as some potentially undiscovered variable stars.
-For this reason, the author created a python package called lightcurator~\cite{castillo_2019} available on Github \url{https://github.com/moemyself3/lightcurator}
-and on PyPI \url{https://pypi.org/project/lightcurator/} for easy installation.
+For this reason, the author created a python package called 
+\textit{lightcurator}~\cite{castillo_2019} which is publicly available on Github \url{https://github.com/moemyself3/lightcurator}
+and on PyPI \url{https://pypi.org/project/lightcurator/} for easy installation using the package insaller for Python, \textit{pip}.
+Lightcurator includes 2 packages: \textit{lightcurve} and \textit{calibration}.
+The functions included are described in the sections that follow.
 
 \section{Pipeline for variable star detection}
 \begin{enumerate}
-    \item Data needs to be cleaned first.
+    \item Reduce data
     \item Align frames
-    \item Extract sources
-    \item Cross match sources with catalogs
+    \item Create deepsky frame
+    \item Plate solve deepsky
+    \item Extract sources from deepsky frame
+    \item Extract sources from aligned frames
+    \item Cross match sources from aligned frames to deepsky frames
+    \item Cross match master catalog with catalogs like VSX and GCVS
     \item Create Database of known sources
+    \item Correct or normalize extracted flux data
     \item Plot individual light curves
     \item Analyze individual light curves for variability estimation
     \item Sort database given variability ranking
 \end{enumerate}
 
 \subsection{Data reduction}
-Reading, writing fits files, and creating data tables is done with a python package called astropy~\cite{astropy_2013,astropy_2018}.
-Majority of the data reduction is done with astropy core package, coordinated packages, and affiliated packages.
-Coordinated packages are maintained by the Astropy Project and affiliated packages are not maintained by the Astropy Project,
+Reading, writing fits files, and creating data tables is done with a python
+package called \textit{astropy}~\cite{astropy_2013,astropy_2018}.
+Majority of the data reduction is done with astropy core package,
+coordinated packages, and affiliated packages.
+Coordinated packages are maintained by the Astropy Project
+and affiliated packages are not maintained by the Astropy Project,
 but is a part of the Astropy Project community.
 
+Coordinated packages in use are \textit{astroquery}~\cite{astroquery}, \textit{ccdproc}~\cite{ccdproc}, \textit{photutils}~\cite{photutils}.
+An affiliated package in use is \textit{astroscrappy}~\cite{astroscrappy}.
+A package in the process of becoming an official affiliated package that is in use is \textit{astroalign}. 
+More details of astroalign are discussed in Section~\ref{section:align} 
+
+\subsubsection{Calibration}
+Lightcurator has a module called calibration that provides the tools for convenient data reduction.
+The routine begins with the creating of the list of the fits files to be used
+with \textit{ccdproc.ImageFileCollection}.
+The list is used for quick reference to all the fits files to be processed.
+The \textit{validate\_units} function checks for the fits keyword `BUNIT'. 
+If the units are missing then the function raises an exception and suggests
+to the user to use the \textit{add\_units} function. 
+All the data sets including flats and darks collected at CTMO are missing units.
+This function inserts the `BUNIT' keyword and sets the value to `adu'.
+
+After defining the paths to the location of the calibration files, i.e.\
+flats and darks, running \textit{create\_masters} makes a master dark and master flat frame.
+This is done by doing a median combine of the dark frames. 
+The dark frames are a measure of dark current which is the noise generated by the thermal energy generated by the silicon of the CCD\@.
+Since the CCD has a constant voltage applied across the device, there is a bias in the signal generated that contains some read noise.
+By taking dark frames at the same exposure time as flat frames, then bias frames can be ignored since the noise will also be removed along
+with the dark frame.
+
+
+
+The function \textit{reduce} takes a user defined read noise, gain, and
+path to the directory containing the data to be reduced. 
+The \textit{reduce} function gain corrects the master dark and master flat, then
+uses \textit{ccdproc.ccd\_proccess}. 
+The \textit{ccdproc.ccd\_process } is an all-in-one function that gain corrects,
+dark subtracts, and flat corrects. It can also take into considerations 
+uncertainties for error propagation, over scan regions, and any trimming that
+may be required in different set ups.
+The new reduced fits frames are then saved to file for later processing.
+
+Through this process it is important to note that the file goes from storing
+16-bit data to 64-bit data.
+This can easily cause a significant impact on a systems storage
+since the new frames are about 4 times larger than before.
+
+\subsubsection{Cosmic ray detection}
+It is not uncommon to have cosmic rays hit the CCD causing peaks in signals that may be confused as sources during source extraction.
+The final step in data reduction is cosmic ray detection.
+For this, the function \textit{ccdproc.cosmicray\_lacosmic} identifies cosmic rays by identifying pixels based on a variation of
+Laplacian edge detection described by van Dokkum~\cite{lacosmic} and implemented by McCully in \textit{astroscrappy}~\cite{astroscrappy}.
+Lightcurator uses this algorithm with a function called \textit{hotpixfix} prior to alignment of frames to allow a flexible
+approach by using raw frames instead of properly reduced frames.
+
 \subsection{Align frames}
-Frame alignment is done with a python package called astroalign written by Dr.\ Martin Beroiz~\cite{beroiz_2019} which is publicly
+\label{section:align}
+Frame alignment is done with a python package called \textit{astroalign} written by Dr.\ Martin Beroiz~\cite{beroiz_2019} which is publicly
 available on Github\footnote{For the latest version of astroalign check: \url{https://github.com/toros-astro/astroalign}}
 
+Astroalign is the preferred method for image alignment since the raw data frames do not have World Coordinate System (WCS) information attached to
+the headers.
+WCS information encodes the transformations required to change $x,y$-pixel location to right ascension (RA) and declination (DEC).
+
+Lightcurator uses a function called \textit{try\_register} to catch exceptions and reject by truncating the data frame if alignment
+cannot be completed.
+Exceptions from astroalign that are most commonly experienced are \textit{MaxIterError} which is raised when the maximum number of iterations
+allowed by astroalign are met and a custom \textit{Exception} raised when there are less than 3 sources detected.
+
+\subsection{Create deepsky frame}
+To create a deepsky frame a simple addition of all aligned frames are made.
+The CCD data is loaded into python as CCDData of numpy.ndarray types.
+Simple addition is used since the deepsky frame is only used for source detection and not for photometry.
+A more appropriate method for combining frames would be a median combine. 
+
 \subsection{Extract sources}
-Source extraction is done with a python package called photutils written by 
+Source extraction is done with a python package called \textit{photutils}.
 
 \subsection{Source cross matching}
 Source cross matching is done with a python package-called 
 
 \subsection{Analyzing variability}
 Variability analysis is done with a python package called feets written by J Cabral~\cite{cabral_2018}
-
-\section{Data Acquisition}
-Eclipsing binary optical data acquisition requires an observer to take time series ccd photometry of one target with an observation cadence dependent on the period.
-
-A cadence can be determined by 
-
-For example, the data gathered for this project was collected on multiple nights and observed on the order of hours with evenly timed frames.
 
 
 \section{Observed objects}
