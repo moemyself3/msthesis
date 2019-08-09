@@ -68,7 +68,9 @@ Required calibration frames are,
         The required exposure time depends on the lighting system to reach a signal between 30 to 50 percent of saturation.
     \item[Dark Frames] Dark frames are made by taking closed `exposures' of the CCD\@. Exposure time for the dark frames need to match
         the flat frame exposure times and object exposure times.
-    \item[Bias Frames] Bias frames are only needed if the observer does not match the dark frame exposure times to the flat frames.
+    \item[Bias Frames] Bias frames are only needed if the observer does not match the dark frame exposure times to the flat frames. 
+        To take bias frames, the observer must take the shortest allowed exposure. Depending on software, by selecting the type of frame as bias,
+        the exposure time will automatically be adjusted or displayed as zero.
 \end{description}
 
 \section{Motivation for pipeline: lightcurator}
@@ -86,9 +88,10 @@ The functions included are described in the sections that follow.
     \item Align frames
     \item Create deepsky frame
     \item Plate solve deepsky
-    \item Extract sources from deepsky frame
+    \item Scrape deepsky header and add WCS to aligned frames
     \item Extract sources from aligned frames
-    \item Cross match sources from aligned frames to deepsky frames
+    \item Extract sources from deepsky frame
+    \item Cross match sources from aligned frames to deepsky frame
     \item Cross match master catalog with catalogs like VSX and GCVS
     \item Create Database of known sources
     \item Correct or normalize extracted flux data
@@ -130,12 +133,10 @@ Since the CCD has a constant voltage applied across the device, there is a bias 
 By taking dark frames at the same exposure time as flat frames, then bias frames can be ignored since the noise will also be removed along
 with the dark frame.
 
-
-
 The function \textit{reduce} takes a user defined read noise, gain, and
 path to the directory containing the data to be reduced. 
 The \textit{reduce} function gain corrects the master dark and master flat, then
-uses \textit{ccdproc.ccd\_proccess}. 
+uses \textit{ccdproc.ccd\_process}. 
 The \textit{ccdproc.ccd\_process } is an all-in-one function that gain corrects,
 dark subtracts, and flat corrects. It can also take into considerations 
 uncertainties for error propagation, over scan regions, and any trimming that
@@ -169,20 +170,157 @@ cannot be completed.
 Exceptions from astroalign that are most commonly experienced are \textit{MaxIterError} which is raised when the maximum number of iterations
 allowed by astroalign are met and a custom \textit{Exception} raised when there are less than 3 sources detected.
 
+Lightcurator assumes that there may be drift though the entire series of
+frames.
+For this reason, the frame in the middle of the time series is taken as the
+reference image.
+
 \subsection{Create deepsky frame}
 To create a deepsky frame a simple addition of all aligned frames are made.
-The CCD data is loaded into python as CCDData of numpy.ndarray types.
-Simple addition is used since the deepsky frame is only used for source detection and not for photometry.
-A more appropriate method for combining frames would be a median combine. 
+The CCD data is loaded into python as CCDData or numpy.ndarray types.
+Simple addition is used since the deepsky frame is only used for source 
+detection and not for photometry.
+A more appropriate method for combining frames for photometry would 
+be a median combine. 
+This is not performed in this step since calculating the median would require
+more processing time and memory.
 
-\subsection{Extract sources}
+\subsection{Plate solve deepsky}
+Plate solving is the process in which the exact position of the field
+is found by matching indexed data with the relative positions of the
+sources on the field in question.
+
+Astrometery.net~\cite{lang_2010} is a service that exists online
+and as a standalone program that can solve the astrometry of a field.
+
+Lightcurator acts as a wrapper that calls on the processes 
+\textit{solve-field} from astrometry.net.
+This starts the blind astrometric solving.
+If the fits header contained pointing information such as RA/DEC, then
+the solving process could be directed where to start the search for matching.
+Since no information was directly available from the header file blind solving
+was required.
+The initial search starts very wide and could take up to 30 
+minutes~\footnote{The user can choose a timeout parameter to
+stop the process after a certain amount of time.} if there are
+very few sources in the field.
+
+\subsection{Scrape deepsky header and add WCS to aligned frames}
+Using Astropy's fits and WCS tools, lightcurator reads the header copies the 
+WCS from the deepsky frame that was plate solved with Astrometer.net's service.
+Up to this point, the headers of all the aligned frames are blank.
+We attach WCS information and the keyword and value assigned to `DATE-OBS' which
+is the time stamp of the observation.
+
+
+\subsection{Source Extraction}
 Source extraction is done with a python package called \textit{photutils}.
+The steps to source extraction are as follows.
+First, an Astropy.stats function called \textit{sigma\_clipped\_stats} takes
+        the data frame finds the standard deviation, $\sigma$,
+        and the median. Then, all points smaller or larger than $3 \sigma$
+        from the median are removed or clipped.
+        This step is done repeatedly 
+        until there are no more points beyond $3 \sigma$ or 5 cycles have
+        been completed. Lightcurator has hard-coded $3 \sigma$ and the 
+        maximum iterations of 5. The function returns 
+        the calculated clipped $\sigma$, mean, and median.
 
-\subsection{Source cross matching}
-Source cross matching is done with a python package-called 
+From photutils, the class \textit{DAOStarFinder}
+uses the DAOFIND algorithm developed
+by Stetson in 1987~\cite{stetson_1987}. 
+Lightcurator hard-codes the full width half max (fwhm)
+at 3.0 and detection threshold at $5 \sigma$ 
+above the background.
+DAOFIND returns a method to find stars. 
+The data is background subtracted before the \textit{find\_stars} method
+is called.
+The background is the median calculated in the first step.
+The method returns a table containing an id, xy centroid, instrumental
+flux, and instrumental magnitude on the stars found.
+
+This method is applied to each aligned frame to create a catalog
+of sources for each frame.
+Lightcurator refers to these as aligned cats.
+
+\subsection{Extract sources from deepsky frame}
+The same method described in the previous section is done to the
+deepsky frame to create a master catalog of all
+possible sources detected in the frame.
+
+\subsection{Cross match sources from aligned frames to deepsky frame}
+Source cross matching is done with an Astropy package
+called \textit{coordinates} using the \textit{SkyCoord} class.
+The aligned catalogs are then compared to the master catalog one at a time. 
+The SkyCoord class creates a method called \textit{match\_to\_catalog\_sky}
+which finds the nearest coordinate match between each 
+object of the two catalogs.
+The matched catalog contains the same information from the sources, but
+only from those sources that best matched coordinates.
+The matched catalogs are written to file.
+
+The final step in cross matching catalogs is to create a time series
+catalog that contains the id of all the sources, their fluxes, and 
+time stamp from the observation.
+This is written to file and saved as an ecsv file by recommendation
+of Astropy documentation.
+
+\subsection{Cross match master catalog with other catalogs}
+The lightcurator function \textit{query\_from\_wcs} takes a string path
+to a fits file with WCS\@.
+The function expects the header keywords specific to WCS
+information `CRVAL1' and `CRVAL2' for RA and DEC, respectively.
+Using \textit{query\_region} from the astroquery package, a search cone of 30 arc minutes is generated
+from a Vizier query of the following catalogs,
+\begin{description}
+    \item[B/vsx] AAVSO International Variable Star Index VSX~\cite{vsx}, 
+    \item[B/gcvs] General Catalogue of Variable Stars~\cite{samus_2017},
+    \item[I/340] UCAC5 Catalogue~\cite{ucac5},
+    \item[I/345] Gaia DR2~\cite{gaia2}.
+\end{description}
+
+A similar process as described in the previous section is used to match
+the master catalog with the Vizier query.
+At this point, the user can verify that the intended eclipsing binary 
+star system is in both VSX and GCVS catalogs and that the index
+from both query results match with each other.
+
+\subsection{Create database of known sources}
+The database is not yet implemented in lightcurator, but is intended to 
+provide magnitudes from other catalogs to transform instrumental
+flux measurements from filtered data to a standard magnitude system.
+
+\subsection{Correct or normalize extracted flux data}
+Since most data is unfiltered, the observations are long with changing
+air mass, and the field of view is small, differential photometry is used.
+Differential photometry uses comparison stars to remove the effects of
+extinction due to changing air mass.
+
+Comparison stars are found using the following criteria, 
+\begin{enumerate}
+    \item the star must not be a variable star,
+    \item the stars must be about the same magnitude,
+    \item the standard deviation of the star must not be too large, and
+    \item the star needs to be visible for most of the observation.
+\end{enumerate}
+
+The average magnitude of the comparison stars is taken for a single frame.
+The averaged magnitude is subtracted from the magnitude of the variable star.
+This is done across all frames in the time series catalog.
+The features due to changing air mass would appear on both variable and 
+comparison stars.
+By subtracting the magnitude of the comparison star from the
+variable star, the variability of the star will become apparent. 
+The difference of a non-variable star to the magnitude of the comparison
+will reveal a horizontal plot, if comparison stars meet the criteria. 
 
 \subsection{Analyzing variability}
-Variability analysis is done with a python package called feets written by J Cabral~\cite{cabral_2018}
+Currently, lightcurator only identifies variable stars using the catalog
+matching with VSX and GCVS\@. 
+
+Immediate plans for variability analysis will be done with a python package 
+called feets: feATURE eXTRACTOR FOR tIME sERIES,
+written by Cabral~\cite{cabral_2018}. 
 
 
 \section{Observed objects}
