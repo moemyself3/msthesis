@@ -5,7 +5,7 @@
 main.pdf
 
 ## Ignore figures (until mature document)
-/figures/*
+# /figures/*
 
 ## Core latex/pdflatex auxiliary files:
 *.aux

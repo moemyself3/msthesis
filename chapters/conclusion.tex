@@ -1,0 +1,46 @@
+\chapter{Conclusion}
+\section{Variable star detection}
+Eclipsing binary star detection by cross identification with VSX and GCVS was successful in all 5 data sets observed.
+Other variable stars including other eclipsing binaries were detected in the same field as the original intended targets of observation.
+Once the implementation of a database is complete then the extractors available on feets can analyze and rank variability. 
+
+\section{Eclipsing binary characterization}
+Only period was calculated using the Lomb-Scargle Method for finding period.
+HP Aur has a much longer period than was actually observed, therefore it is expected that period analysis will result in poor
+relation to the period reported by GCVS\@.
+Between the two observations of PR Boo only one had a complete period that resulted in a closer match to the reported period on GCVS\@.
+The large discrepancy between the periods of NY Lyr are most likely effects due to the single aperture that was selected based
+on average seeing. The reported maximum magnitude of 11.16 for NY Lyr suggests that a different aperture should be used.
+
+\subsection{Limitations on characterization}
+CTMO is being upgraded to include a spectrometer for spectral data collection.
+Radial velocities cannot be measured without spectral data.
+For this reason eclipsing binary system mass calculations cannot be achieved at CTMO\@.
+At least 2 filters are required for effective temperature calculations.
+Since most data taken from the first years of CTMO is unfiltered effective temperatures cannot be calculated.
+
+\section{Considerations for the future}
+Aperture photometry relies on selecting appropriate aperture size for a given observation.
+This can be systematically found by calculating the full width half maximum of a source to determine the radius of aperture in pixels.
+Point spread function (PSF) photometry is a better approximation of a profile of a source taking into account the more Gaussian-like
+distribution of signal across the pixels of a CCD\@.
+Currently, photutils v0.6 has a PSF Photometry module that is considered experimental and not used for this reason. 
+
+Lightcurator relies on Astrometry.net service for attaching WCS and assumes this step must be completed.
+To make lightcurator more universal, this step must be made optional.
+Since Astrometry.net is not a python package the user must install the Astrometry program.
+The image registration software, astroalign, has the potential to attach WCS if using one reference image with proper WCS, thus
+eliminating the need for software outside the python environment.
+Astroalign does not currently have this feature.
+
+Optimization can be performed by reducing the number of times a file is saved to memory to read the header.
+Statistics of every data frame is performed on multiple occasions as part of intermediary steps such as source detection for 
+image registration. 
+Lightcurator could switch the order of the pipeline and get xy source positions and flux measurements first.
+Then by using the xy pixel positions from the data frames in astroalign the source matching can be done without 
+the need for running source extraction. Benchmarking of both methods will need to be performed for comparison.
+
+Lastly, for proper long term period analysis transformations to a standard system should be performed. 
+As a first order approximation for unfiltered data comparison star magnitudes using the reported Johnson V magnitude are typically used.
+Given that lightcurator already can query VizieR Catalogs this upgrade should be possible. 
+

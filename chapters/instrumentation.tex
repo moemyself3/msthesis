@@ -10,8 +10,8 @@ The word Nompuewenu meaning ``beyond the sky'' is borrowed from the Mapuche lang
 
 \begin{figure}[h]
     \centering
-    \includegraphics{example-image}
-\caption{Dr.\ Cristina Valeria Torres Memorial Astronomical Observatory at Resaca de la Palma State Park}
+    \includegraphics[width=\columnwidth]{figures/ctmo.jpg}%{example-image}
+\caption{Dr.\ Cristina Valeria Torres Memorial Astronomical Observatory at Resaca de la Palma State Park photo by Americo Hinojosa Lee}
 \label{fig:CTMO}
 \end{figure}
 
@@ -51,6 +51,18 @@ These are the planned upgrades for the observatory.
 \subsection{Hardware}
 The author has created prototypes of sensors to use for gear encoding with optical and hall effect sensors.
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\columnwidth]{figures/prototype.jpg}
+    \caption{Two sensors on mounting stage to be installed on observatory wall. Left: hall effect sensor. Right: optical sensor.}
+\label{fig:sensors}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\columnwidth]{figures/arduino.jpg}
+    \caption{Arduino Uno inside enclosure}
+\label{fig:arduino}
+\end{figure}
 \begin{itemize}
     \item Dome Rotation
         \begin{itemize}
@@ -72,6 +84,12 @@ The author has created prototypes of sensors to use for gear encoding with optic
     
 \section{Telescope System}
 \subsection{16-inch Meade LX200-GPS}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\columnwidth]{figures/meade.jpg}
+    \caption{16-in Meade LX200-GPS}
+\label{fig:meade}
+\end{figure}
 \subsubsection{OTA Specifications}
 The following specifications are given by the manufacturer Meade Instruments Corporation~\cite{meade_2003} for the optical tube assembly (OTA).
 \begin{description}
@@ -120,8 +138,14 @@ Exposures longer than 30 seconds were not possible due to noticeable drift.
 Attempts were made to correct for this issue by doing a drift polar alignment.
 
 The microfocuser was not able to hold the weight of the cameras used for research.
-The author designed and constructed a rig that fit on the back of the OTA that supported the extra weight and allowed
+The author designed and constructed a rig pictured in figure~\ref{fig:rig} that fit on the back of the OTA that supported the extra weight and allowed
 for regular function of the microfocuser.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\columnwidth]{figures/rig.jpg}
+    \caption{Rig that was designed and constructed by the author shown supporting SBIG STF8300 behind 16-in Meade LX200-GPS}
+\label{fig:rig}
+\end{figure}
 
 % According to the aperture of the telescope, an ideal limiting magnitude is calculated, assuming perfect optics, camera, and sky brightness,
 % i.e.\  spacelike conditions.
@@ -166,6 +190,12 @@ The following specifications are given by the manufacturer PlaneWave Instruments
 \subsubsection{Telescope Pier}
 The manufacturer Planewave Instruments provided a tool for calculating the required pier height for their wedge and L-500 Direct Drive Mount.
 We used the same pedestal that was used with the Meade pier.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\columnwidth]{figures/pier.jpg}
+    \caption{Pedestal, pier, and wedge before installation of mount}
+\label{fig:pier}
+\end{figure}
 \begin{description}
     \item[Pedastal height] 44.25 inches
     \item[Wedge inclination] for latitudes 22--28 degrees
@@ -174,6 +204,12 @@ We used the same pedestal that was used with the Meade pier.
 \end{description}
 
 \subsubsection{Installation}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\columnwidth]{figures/cdkinstall.jpg}
+    \caption{Installation of CDK500}
+\label{fig:cdkinstall}
+\end{figure}
 The installation of the CDK17 with L-500 mount required the removal of the 16-inch Meade LX200 GPS Telescope system and wedge from the pedestal.
 After removal of the Meade system, we installed the 12-inch pier on the pedestal.
 Over the pier we installed the wedge and did a rough alignment to due north for polar alignment.
@@ -227,6 +263,14 @@ The following specifications are given by the manufacturer Diffraction Limited~\
     \item[Full Frame Download] Less than 1 second
     \item[Weight] 1.8 pounds
 \end{description}
+Linearity tests of the SBIG STF-8300 have been performed and documented by Camuccio~\cite{richard_2019a} to measure gain and read noise.
+A plot of the mean pixel value vs the exposure time is show in figure~\ref{fig:linearitysbig}.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\columnwidth]{figures/sbig_linearity.png}
+    \caption{Linearity test of SBIG SFT-8300 performed by Richard Camuccio~\protect\cite{richard_2019a}}
+\label{fig:linearitysbig}
+\end{figure}
 
 \subsubsection{16-inch Meade}
 Using equations~\ref{eq:pixelscale} and~\ref{eq:fov} to find pixel scale and FOV, respectively, we find, 
@@ -236,6 +280,13 @@ Using equations~\ref{eq:pixelscale} and~\ref{eq:fov} to find pixel scale and FOV
 \end{description}
 
 \subsection{Apogee Alta F16M}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\columnwidth]{figures/apogee.jpg}
+    \caption{Apogee Alta F16M being prepared for mounting onto CDK17}
+\label{fig:apogee}
+\end{figure}
+
 The following specifications are given by the manufacturer ANDOR~\cite{apogee}.
 \subsubsection{Specifications}
 \begin{description}
@@ -246,6 +297,14 @@ The following specifications are given by the manufacturer ANDOR~\cite{apogee}.
     \item[Read noise] $\SI{7.4}{\elementarycharge}$
     \item[Weight] 4.2 pounds
 \end{description}
+Linearity tests of the Apogee Alta have been performed and documented by Camuccio~\cite{richard_2019a} to measure gain and read noise.
+A plot of the mean pixel value vs the exposure time is show in figure~\ref{fig:linearityapogee}.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\columnwidth]{figures/apogee_linearity.png}
+    \caption{Linearity test of Apogee Alta performed by Richard Camuccio~\protect\cite{richard_2019a}}
+\label{fig:linearityapogee}
+\end{figure}
 
 
 \subsubsection{16-inch Meade}
@@ -262,13 +321,6 @@ Using equations~\ref{eq:pixelscale} and~\ref{eq:fov} to find pixel scale and FOV
     \item[FOV] $\SI{43.12}{\arcminute} \times \SI{43.12}{\arcminute}$
 \end{description}
 
-\begin{figure}[h]
-    \centering
-    \includegraphics{example-image}
-    \caption{Linearity test performed by Richard Camuccio~\protect\cite{richard_2019a}}
-\label{fig:linearity}
-\end{figure}
-
 \section{Software}
 CTMO has a Github page where software is being developed at \url{https://github.com/CTMObservatory}
 Software used was Maxim DL~\cite{maxim}, Cartes du Ciel-The Sky~\cite{cdc}, ASCOM Platform (POTH)~\cite{ascom},
@@ -279,6 +331,13 @@ The author is leading the design and development of the custom software for the 
 A custom ASCOM driver was written by Latifah Maasarani~\cite{maasarani_2017} to interface 
 with an arduino. 
 Arduino code is being written by Martin Beroiz.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\columnwidth]{figures/driver.png}
+    \caption{Sequence diagram for a movement command from POTH platform as implemented by Maasarani~\protect\cite{maasarani_2017}}
+\label{fig:driver}
+\end{figure}
 
 \subsection{Telescope}
 \begin{description}
@@ -306,7 +365,7 @@ POTH acts as a hub for all communications between drivers, devices, and programs
 on different programs.
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\columnwidth]{example-image}%{figures/poth.png}
+    \includegraphics[width=\columnwidth]{figures/poth.png}
     \caption{POTH block diagram of typical usage from ASCOM website~\protect\cite{ascom}}
 \label{fig:poth}
 \end{figure}
