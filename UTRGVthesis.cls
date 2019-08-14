@@ -16,13 +16,13 @@
 \RequirePackage{mathptmx}
 \RequirePackage[T1]{fontenc}
 
-
 \RequirePackage{amsmath}  % for ams mathematical environments
 \RequirePackage[letterpaper]{geometry} % for fixing margins
 \RequirePackage{indentfirst}  % for indention of first paragraph
 \RequirePackage{graphicx} % Allow the inclusion of graphics
 \RequirePackage{setspace} % Allow double spacing with the \doublespacing
 \RequirePackage{calc}
+
 
 % Declare some variables to hold the text fields for the preliminary pages
 
@@ -54,6 +54,9 @@
     \newcommand{\MemberC}[1]{\gdef\UTRGVField@MemberC{#1}}
     \newcommand{\MemberD}[1]{\gdef\UTRGVField@MemberD{#1}}
     \newcommand{\MemberE}[1]{\gdef\UTRGVField@MemberE{#1}}
+    \newcommand{\MemberF}[1]{\gdef\UTRGVField@MemberF{#1}}
+    \newcommand{\MemberG}[1]{\gdef\UTRGVField@MemberG{#1}}
+    \newcommand{\MemberH}[1]{\gdef\UTRGVField@MemberH{#1}}
     \newcommand{\Month}[1]{\gdef\UTRGVField@Month{#1}}
     \newcommand{\Year}[1]{\gdef\UTRGVField@Year{#1}}
     \newcommand{\Abstract}[1]{\gdef\UTRGVField@Abstract{#1}}
@@ -75,6 +78,9 @@
     \MemberC{}
     \MemberD{}
     \MemberE{}
+    \MemberF{}
+    \MemberG{}
+    \MemberH{}
 
 % define a command to insert a blank page
         \newcommand{\insertblankpage}{%
@@ -94,7 +100,7 @@
 
 % Define the preliminary page layouts using the variables
 
-    \newcommand{\UTRGVtitlepage}{%
+    \newcommand{\utrgvtitlepage}{%
         \newgeometry{top=2in, bottom=1in, left=1in, right=1in}
         \thispagestyle{empty}
         {\centering
@@ -161,6 +167,18 @@
                 Committee Member\\
                 \vfill
         \fi
+        \if \UTRGVField@MemberF \relax \relax \else \mbox{\UTRGVField@MemberF}\\
+                Committee Member\\
+                \vfill
+        \fi
+        \if \UTRGVField@MemberG \relax \relax \else \mbox{\UTRGVField@MemberG}\\
+                Committee Member\\
+                \vfill
+        \fi
+        \if \UTRGVField@MemberH \relax \relax \else \mbox{\UTRGVField@MemberH}\\
+                Committee Member\\
+                \vfill
+        \fi
         \mbox{\UTRGVField@Month~\UTRGVField@Year} \\
         \vspace{5\baselineskip}  % skip 5 lines to line up with previous page
         \par
@@ -190,6 +208,7 @@
     }
 
     \newcommand{\abstractpage}{%
+        \setcounter{pagebegin}{\value{page}} %get value of first page
         \newgeometry{top=2in, bottom=1in, left=1in, right=1in}
         \thispagestyle{fancy}
         {\centering%
@@ -218,8 +237,7 @@
             {\ifnum\totvalue{figurenum}=1 \total{figurenum}~figure,\else
               \total{figurenum}~figures,\fi}
           \fi
-          %\total{citesnum}~references,
-          \total{bibnum}~references%titles.
+          \total{bibnum}~references.
 
         \UTRGVField@Abstract\par
       }
@@ -227,7 +245,11 @@
         \vfill
 
         \restoregeometry
-        \insertblankpage
+        % keep track of pages
+        \setcounter{pagedifference}{\value{pagebegin} - \value{page}}
+        \ifodd \value{pagedifference}
+          \insertblankpage % insert blank page only if odd number of pages
+        \fi
     }
 
 
@@ -235,6 +257,7 @@
       \if \UTRGVField@Dedication
        \relax
       \else
+        \setcounter{pagebegin}{\value{page}} %get value of first page
         \newgeometry{top=2in, bottom=1in, left=1in, right=1in}
         \thispagestyle{fancy}
         {\centering
@@ -248,7 +271,11 @@
         \UTRGVField@Dedication
       }
         \restoregeometry
-        \insertblankpage
+        % keep track of pages
+        \setcounter{pagedifference}{\value{pagebegin} - \value{page}}
+        \ifodd \value{pagedifference}
+          \insertblankpage % insert blank page only if odd number of pages
+        \fi
       \fi
         }
 
@@ -270,6 +297,7 @@
       \if \UTRGVField@Acknowledgments
        \relax
       \else
+        \setcounter{pagebegin}{\value{page}} %get value of first page
         \newgeometry{top=2in, bottom=1in, left=1in, right=1in}
         \thispagestyle{fancy}
         {\centering
@@ -283,7 +311,11 @@
           \UTRGVField@Acknowledgments
       }
         \restoregeometry
-        \insertblankpage
+        % keep track of pages
+        \setcounter{pagedifference}{\value{pagebegin} - \value{page}}
+        \ifodd \value{pagedifference}
+          \insertblankpage % insert blank page only if odd number of pages
+        \fi
       \fi
         }
 
@@ -320,7 +352,7 @@
     \DeclareOption*{\PassOptionsToClass{\CurrentOption}{book}}
     \ProcessOptions
     \relax
-    \LoadClass[letterpaper,12pt]{book}
+    \LoadClass[letterpaper,12pt,oneside]{book}
 
 \renewcommand{\contentsname}{TABLE OF CONTENTS\vspace{-0.20in}}
 \renewcommand\listfigurename{LIST OF FIGURES\vspace{-0.20in}}
@@ -344,7 +376,6 @@
     %\renewcommand{\textfraction}{0.07}
 
 
-
 % Redefine the Table of Contents to deal with some blank page
 % and bookmarking issues relating to ETD submission
     \let\TEMPtableofcontents\tableofcontents
@@ -359,8 +390,8 @@
       \doublespacing
         \thispagestyle{fancy}
         \restoregeometry
-        
-       % keep track of pages in TOC
+
+      % keep track of pages in TOC
       \setcounter{pagedifference}{\value{pagebegin} - \value{page}}
       \ifodd \value{pagedifference}
         \insertblankpage % insert blank page only if odd number of pages
@@ -371,6 +402,7 @@
  %and bookmarking issues
     \let\TEMPlistoffigures\listoffigures
     \renewcommand{\listoffigures}{%
+      \setcounter{pagebegin}{\value{page}} %get value of first page in LOF
       \providecommand\phantomsection{} \phantomsection
       \addcontentsline{toc}{chapter}{List of Figures}
       \singlespacing
@@ -379,13 +411,19 @@
       \doublespacing
         \thispagestyle{fancy}
         \restoregeometry
-          \insertblankpage    
+
+      % keep track of pages
+      \setcounter{pagedifference}{\value{pagebegin} - \value{page}}
+      \ifodd \value{pagedifference}
+        \insertblankpage % insert blank page only if odd number of pages
+      \fi
     }
 
  %Redefine the List of Tables to deal with some blank page
  %and bookmarking issues
     \let\TEMPlistoftables\listoftables
     \renewcommand{\listoftables}{%
+      \setcounter{pagebegin}{\value{page}} %get value of first page in LOT
       \providecommand\phantomsection{} \phantomsection
       \addcontentsline{toc}{chapter}{List of Tables}
         \newgeometry{top=1.125in, bottom=1in, left=1in, right=1in}
@@ -394,7 +432,12 @@
       \doublespacing
         \thispagestyle{fancy}
         \restoregeometry
-        \insertblankpage
+
+      % keep track of pages
+      \setcounter{pagedifference}{\value{pagebegin} - \value{page}}
+      \ifodd \value{pagedifference}
+        \insertblankpage % insert blank page only if odd number of pages
+      \fi
     }
 
  %Redefine the Bibliography to deal with a bookmarking issues
@@ -414,7 +457,7 @@
 % Define the macro for making preliminary pages
     \newcommand{\makepreliminarypages}{%
       % We insert the pages heres and adjust spacing and geometry
-        \UTRGVtitlepage
+        \utrgvtitlepage
         \committeepage
         \copyrightpage
         \abstractpage
