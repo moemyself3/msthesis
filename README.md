@@ -1,7 +1,8 @@
 # Physics Master Thesis UTRGV
 ### Author: Moises Castillo
 
-This is to be submitted by 2019 August 12.
+Master Thesis submitted on 12 Aug 2019.
+Accepted 14 Aug 2019.
 
 ### Compilation and installation
 from [Martin Beroiz docthesis](https://github.com/martinberoiz/docthesis)
